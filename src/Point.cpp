@@ -1,3 +1,4 @@
+#include <vector>
 #include <queue>
 #include <math.h>
 
@@ -16,7 +17,7 @@ inline double distance(const Point &a, const Point &b) {
 /// nearestPoints should return a new vector (list) with the `n` points out of the parameter `points` which are closest
 /// (euclidean distance) to `center`.
 ///
-/// Complexity: O(m * log(n))
+/// Complexity: O(n + m * log(n))
 /// Considering `m = points.size()`, with `n <= m`.
 /// \param center Reference point for the distance.
 /// \param points The list of points to find the nearest ones.
@@ -28,7 +29,7 @@ vector<Point> nearestPoints(const Point &center, const vector<Point> &points, co
 		return vector<Point>();
 	}
 	if (n > points.size()) {
-		// O(n)
+		// O(m) < O(n)
 		return vector<Point>(points);
 	}
 

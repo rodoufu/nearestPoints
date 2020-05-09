@@ -10,6 +10,9 @@ struct Point {
 
 /// nearestPoints should return a new vector (list) with the `n` points out of the parameter `points` which are closest
 /// (euclidean distance) to `center`.
+///
+/// Complexity: O(n + m * log(n))
+/// Considering `m = points.size()`, with `n <= m`.
 /// \param center Reference point for the distance.
 /// \param points The list of points to find the nearest ones.
 /// \param n Number of points to return.
