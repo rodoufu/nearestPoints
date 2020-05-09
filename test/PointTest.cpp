@@ -291,7 +291,6 @@ TEST(NearestElements, RepeatedPoints) {
 	}
 }
 
-/*
 TEST(NearestElements, DistinctPointsSameDistance) {
 	Point center{.x =  0, .y =  0};
 	vector<Point> points{
@@ -351,4 +350,3 @@ TEST(NearestElements, DistinctPointsSameDistance) {
 		}
 	}
 }
- */
