@@ -15,6 +15,11 @@ const vector<Point> &printVec(const vector<Point> &points) {
 	return points;
 }
 
+void checkPointsEqual(const Point &a, const Point &b) {
+	EXPECT_EQ(a.x, b.x);
+	EXPECT_EQ(a.y, b.y);
+}
+
 TEST(NearestElements, NoElements) {
 	Point center{.x =  0, .y =  0};
 	vector<Point> points;
@@ -44,6 +49,7 @@ TEST(NearestElements, NsmallerThanNumberOfElements) {
 		Point{.x = 2, .y = 0},
 		Point{.x = 0, .y = 3},
 		Point{.x = 1, .y = 0},
+		Point{.x = 6, .y = 0},
 		Point{.x = 0, .y = 4},
 		Point{.x = 5, .y = 0},
 	};
@@ -58,8 +64,7 @@ TEST(NearestElements, NsmallerThanNumberOfElements) {
 			Point{.x = 1, .y = 0},
 		};
 		for (auto i = 0; i < nearestN4.size(); ++i) {
-			EXPECT_EQ(expected[i].x, nearestN4[i].x);
-			EXPECT_EQ(expected[i].y, nearestN4[i].y);
+			checkPointsEqual(expected[i], nearestN4[i]);
 		}
 	}
 
@@ -72,8 +77,7 @@ TEST(NearestElements, NsmallerThanNumberOfElements) {
 			Point{.x = 1, .y = 0},
 		};
 		for (auto i = 0; i < nearestN3.size(); ++i) {
-			EXPECT_EQ(expected[i].x, nearestN3[i].x);
-			EXPECT_EQ(expected[i].y, nearestN3[i].y);
+			checkPointsEqual(expected[i], nearestN3[i]);
 		}
 	}
 
@@ -85,8 +89,178 @@ TEST(NearestElements, NsmallerThanNumberOfElements) {
 			Point{.x = 1, .y = 0},
 		};
 		for (auto i = 0; i < nearestN2.size(); ++i) {
-			EXPECT_EQ(expected[i].x, nearestN2[i].x);
-			EXPECT_EQ(expected[i].y, nearestN2[i].y);
+			checkPointsEqual(expected[i], nearestN2[i]);
+		}
+	}
+
+	{
+		auto nearestN2 = nearestPoints(center, points, 2);
+		EXPECT_EQ(2, nearestN2.size());
+		vector<Point> expected{
+			Point{.x = 2, .y = 0},
+			Point{.x = 1, .y = 0},
+		};
+		for (auto i = 0; i < nearestN2.size(); ++i) {
+			checkPointsEqual(expected[i], nearestN2[i]);
+		}
+	}
+
+	{
+		auto nearestN2 = nearestPoints(center, points, 1);
+		EXPECT_EQ(1, nearestN2.size());
+		vector<Point> expected{
+			Point{.x = 1, .y = 0},
+		};
+		for (auto i = 0; i < nearestN2.size(); ++i) {
+			checkPointsEqual(expected[i], nearestN2[i]);
+		}
+	}
+}
+
+TEST(NearestElements, PointsInAscendingOrder) {
+	Point center{.x =  0, .y =  0};
+	vector<Point> points{
+		Point{.x = 1, .y = 0},
+		Point{.x = 2, .y = 0},
+		Point{.x = 0, .y = 3},
+		Point{.x = 0, .y = 4},
+		Point{.x = 5, .y = 0},
+		Point{.x = 6, .y = 0},
+	};
+
+	{
+		auto nearestN4 = nearestPoints(center, points, points.size() - 1);
+		EXPECT_EQ(points.size() - 1, nearestN4.size());
+		vector<Point> expected{
+			Point{.x = 0, .y = 4},
+			Point{.x = 0, .y = 3},
+			Point{.x = 2, .y = 0},
+			Point{.x = 1, .y = 0},
+		};
+		for (auto i = 0; i < nearestN4.size(); ++i) {
+			checkPointsEqual(expected[i], nearestN4[i]);
+		}
+	}
+
+	{
+		auto nearestN3 = nearestPoints(center, points, points.size() - 2);
+		EXPECT_EQ(points.size() - 2, nearestN3.size());
+		vector<Point> expected{
+			Point{.x = 0, .y = 3},
+			Point{.x = 2, .y = 0},
+			Point{.x = 1, .y = 0},
+		};
+		for (auto i = 0; i < nearestN3.size(); ++i) {
+			checkPointsEqual(expected[i], nearestN3[i]);
+		}
+	}
+
+	{
+		auto nearestN2 = nearestPoints(center, points, points.size() - 3);
+		EXPECT_EQ(points.size() - 3, nearestN2.size());
+		vector<Point> expected{
+			Point{.x = 2, .y = 0},
+			Point{.x = 1, .y = 0},
+		};
+		for (auto i = 0; i < nearestN2.size(); ++i) {
+			checkPointsEqual(expected[i], nearestN2[i]);
+		}
+	}
+
+	{
+		auto nearestN2 = nearestPoints(center, points, 2);
+		EXPECT_EQ(2, nearestN2.size());
+		vector<Point> expected{
+			Point{.x = 2, .y = 0},
+			Point{.x = 1, .y = 0},
+		};
+		for (auto i = 0; i < nearestN2.size(); ++i) {
+			checkPointsEqual(expected[i], nearestN2[i]);
+		}
+	}
+
+	{
+		auto nearestN2 = nearestPoints(center, points, 1);
+		EXPECT_EQ(1, nearestN2.size());
+		vector<Point> expected{
+			Point{.x = 1, .y = 0},
+		};
+		for (auto i = 0; i < nearestN2.size(); ++i) {
+			checkPointsEqual(expected[i], nearestN2[i]);
+		}
+	}
+}
+
+TEST(NearestElements, PointsInDescendingOrder) {
+	Point center{.x =  0, .y =  0};
+	vector<Point> points{
+		Point{.x = 6, .y = 0},
+		Point{.x = 5, .y = 0},
+		Point{.x = 0, .y = 4},
+		Point{.x = 0, .y = 3},
+		Point{.x = 2, .y = 0},
+		Point{.x = 1, .y = 0},
+	};
+
+	{
+		auto nearestN4 = nearestPoints(center, points, points.size() - 1);
+		EXPECT_EQ(points.size() - 1, nearestN4.size());
+		vector<Point> expected{
+			Point{.x = 0, .y = 4},
+			Point{.x = 0, .y = 3},
+			Point{.x = 2, .y = 0},
+			Point{.x = 1, .y = 0},
+		};
+		for (auto i = 0; i < nearestN4.size(); ++i) {
+			checkPointsEqual(expected[i], nearestN4[i]);
+		}
+	}
+
+	{
+		auto nearestN3 = nearestPoints(center, points, points.size() - 2);
+		EXPECT_EQ(points.size() - 2, nearestN3.size());
+		vector<Point> expected{
+			Point{.x = 0, .y = 3},
+			Point{.x = 2, .y = 0},
+			Point{.x = 1, .y = 0},
+		};
+		for (auto i = 0; i < nearestN3.size(); ++i) {
+			checkPointsEqual(expected[i], nearestN3[i]);
+		}
+	}
+
+	{
+		auto nearestN2 = nearestPoints(center, points, points.size() - 3);
+		EXPECT_EQ(points.size() - 3, nearestN2.size());
+		vector<Point> expected{
+			Point{.x = 2, .y = 0},
+			Point{.x = 1, .y = 0},
+		};
+		for (auto i = 0; i < nearestN2.size(); ++i) {
+			checkPointsEqual(expected[i], nearestN2[i]);
+		}
+	}
+
+	{
+		auto nearestN2 = nearestPoints(center, points, 2);
+		EXPECT_EQ(2, nearestN2.size());
+		vector<Point> expected{
+			Point{.x = 2, .y = 0},
+			Point{.x = 1, .y = 0},
+		};
+		for (auto i = 0; i < nearestN2.size(); ++i) {
+			checkPointsEqual(expected[i], nearestN2[i]);
+		}
+	}
+
+	{
+		auto nearestN2 = nearestPoints(center, points, 1);
+		EXPECT_EQ(1, nearestN2.size());
+		vector<Point> expected{
+			Point{.x = 1, .y = 0},
+		};
+		for (auto i = 0; i < nearestN2.size(); ++i) {
+			checkPointsEqual(expected[i], nearestN2[i]);
 		}
 	}
 }
