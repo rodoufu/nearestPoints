@@ -4,8 +4,6 @@ project(nearestPoints)
 add_definitions(-std=c++17)
 add_definitions(-D_GLIBCXX_DEBUG)
 
-set(SOURCE_FILES src/*.cpp)
-
 file(GLOB SOURCE_FILES src/*.cpp)
 add_library(nearestPoints ${SOURCE_FILES})
 
